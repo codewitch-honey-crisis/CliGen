@@ -1,0 +1,6 @@
+<Project>
+  <PropertyGroup>
+    <!-- Roslyn version the generator and the generator tests compile against. 4.8 ships with the .NET 8 SDK / VS 17.8. -->
+    <RoslynVersion Condition="'$(RoslynVersion)' == ''">4.8.0</RoslynVersion>
+  </PropertyGroup>
+</Project>

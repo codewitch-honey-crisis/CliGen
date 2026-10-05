@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- A self-contained test runner (dotnet run). It doesn't depend on a test framework package,
+       so it runs anywhere the .NET SDK does. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>false</IsPackable>
+    <NoWarn>$(NoWarn);CS0649;CS0169;CS0414</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- As an analyzer: generates code for the option types in RuntimeTests.cs.
+         As a reference: lets DiagnosticTests.cs drive the generator directly. -->
+    <ProjectReference Include="..\..\src\Cli.Generator\Cli.Generator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="true" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynVersion)" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!-- Source generators must target netstandard2.0 to load in Visual Studio.
+         CliGenTargetFramework exists only so the project can be built where netstandard2.0 reference assemblies aren't available. -->
+    <TargetFramework Condition="'$(CliGenTargetFramework)' == ''">netstandard2.0</TargetFramework>
+    <TargetFramework Condition="'$(CliGenTargetFramework)' != ''">$(CliGenTargetFramework)</TargetFramework>
+    <LangVersion>12</LangVersion>
+    <Nullable>enable</Nullable>
+    <IsRoslynComponent>true</IsRoslynComponent>
+    <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
+    <RootNamespace>Cli.Generator</RootNamespace>
+
+    <!-- Packaging as an analyzer-only NuGet package -->
+    <PackageId>Cli.Generator</PackageId>
+    <Version>1.0.0</Version>
+    <Description>Incremental source generator for command line argument parsing.</Description>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <DevelopmentDependency>true</DevelopmentDependency>
+    <SuppressDependenciesWhenPacking>true</SuppressDependenciesWhenPacking>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>C:\Users\gazto\source\repos\CliGen\Key.snk</AssemblyOriginatorKeyFile>
+    <Title>CLI Generator</Title>
+    <Authors>honey the codewitch</Authors>
+    <Copyright>Copyright (C) 2026 by honey the codewitch</Copyright>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="$(RoslynVersion)" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The runtime helper is compiled into the consuming project, not into the generator. -->
+    <Compile Remove="Runtime/**" />
+    <EmbeddedResource Include="Runtime/*.cs" LogicalName="Cli.Generator.Runtime.%(Filename)%(Extension)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="$(OutputPath)$(AssemblyName).dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\..\LICENSE">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
+    <None Include="..\..\README.md" Pack="true" PackagePath="\" Visible="false" />
+  </ItemGroup>
+
+</Project>
